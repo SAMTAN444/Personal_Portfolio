@@ -1,0 +1,102 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-06-11T00:00:00Z",
+  "title": "Design System: Samuel Tan — Portfolio",
+  "extensions": {
+    "colorMeta": {
+      "gold": { "role": "primary", "displayName": "Signal Gold", "canonical": "#C9A227", "tonalRamp": ["#241C06", "#3D310B", "#5C4A12", "#7E661A", "#A9871C", "#C9A227", "#D9B84E", "#E8D188", "#F4E7BE"] },
+      "ink-black": { "role": "neutral", "displayName": "Ink Black", "canonical": "#0B0B0C", "tonalRamp": ["#0B0B0C", "#111113", "#1B1B1E", "#2A2A2E", "#3D3D42", "#847E73", "#978F82", "#BEBAB0", "#ECE7DD"] }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display Serif", "purpose": "The two-line hero name only." },
+      "label": { "displayName": "Mono Label", "purpose": "Eyebrows, nav, tech stacks, the ticker — all metadata." },
+      "body": { "displayName": "Grotesque Body", "purpose": "Running prose, capped at ~70ch." }
+    },
+    "shadows": [],
+    "motion": [
+      { "name": "ease-out-standard", "value": "cubic-bezier(0.16, 1, 0.3, 1)", "purpose": "Scroll-in fade/translate and button hovers. Ease-out, never bounce." }
+    ],
+    "breakpoints": [
+      { "name": "md", "value": "768px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The single filled gold action per view (GitHub).",
+      "html": "<a class=\"ds-btn-primary\" href=\"#\">GITHUB</a>",
+      "css": ".ds-btn-primary { display:inline-flex; align-items:center; gap:8px; background:#C9A227; color:#0B0B0C; padding:12px 24px; border-radius:2px; font-family:'JetBrains Mono',ui-monospace,monospace; font-size:0.75rem; font-weight:500; letter-spacing:0.12em; text-transform:uppercase; text-decoration:none; transition:background .18s cubic-bezier(0.16,1,0.3,1),transform .18s cubic-bezier(0.16,1,0.3,1); } .ds-btn-primary:hover { background:#A9871C; transform:translateY(-2px); } .ds-btn-primary:focus-visible { outline:2px solid #C9A227; outline-offset:2px; }"
+    },
+    {
+      "name": "Ghost Button",
+      "kind": "button",
+      "refersTo": "button-ghost",
+      "description": "Secondary actions: LinkedIn, Email, Resume.",
+      "html": "<a class=\"ds-btn-ghost\" href=\"#\">LINKEDIN</a>",
+      "css": ".ds-btn-ghost { display:inline-flex; align-items:center; gap:8px; background:transparent; color:#ECE7DD; padding:12px 24px; border:1px solid #847E73; border-radius:2px; font-family:'JetBrains Mono',ui-monospace,monospace; font-size:0.75rem; font-weight:500; letter-spacing:0.12em; text-transform:uppercase; text-decoration:none; transition:color .18s,border-color .18s; } .ds-btn-ghost:hover { color:#C9A227; border-color:#C9A227; } .ds-btn-ghost:focus-visible { outline:2px solid #C9A227; outline-offset:2px; }"
+    },
+    {
+      "name": "Status Pill",
+      "kind": "custom",
+      "refersTo": "status-pill",
+      "description": "Live-status pill with a pulsing green dot.",
+      "html": "<span class=\"ds-status-pill\"><span class=\"ds-dot\"></span>INCOMING AI/ML @ HTX</span>",
+      "css": ".ds-status-pill { display:inline-flex; align-items:center; gap:8px; background:#111113; color:#ECE7DD; padding:6px 14px; border-radius:9999px; font-family:'JetBrains Mono',ui-monospace,monospace; font-size:0.75rem; letter-spacing:0.12em; text-transform:uppercase; } .ds-dot { width:7px; height:7px; border-radius:9999px; background:#5FB87A; animation:ds-pulse 2s ease-in-out infinite; } @keyframes ds-pulse { 0%,100%{opacity:1} 50%{opacity:0.4} } @media (prefers-reduced-motion: reduce){ .ds-dot{animation:none} }"
+    },
+    {
+      "name": "Chat Input",
+      "kind": "input",
+      "refersTo": "input-chat",
+      "description": "The chat composer field.",
+      "html": "<input class=\"ds-input-chat\" placeholder=\"Ask about my work…\" />",
+      "css": ".ds-input-chat { background:#111113; color:#ECE7DD; padding:14px 16px; border:1px solid #847E73; border-radius:2px; font-family:'Hanken Grotesk',system-ui,sans-serif; font-size:1rem; width:100%; } .ds-input-chat::placeholder { color:#978F82; } .ds-input-chat:focus-visible { outline:2px solid #C9A227; outline-offset:2px; border-color:#C9A227; }"
+    },
+    {
+      "name": "Skill Chip",
+      "kind": "chip",
+      "refersTo": "chip-skill",
+      "description": "Static skill tag in the About cluster.",
+      "html": "<span class=\"ds-chip\">TYPESCRIPT</span>",
+      "css": ".ds-chip { display:inline-block; background:transparent; color:#978F82; padding:6px 12px; border:1px solid #1B1B1E; border-radius:2px; font-family:'JetBrains Mono',ui-monospace,monospace; font-size:0.75rem; letter-spacing:0.12em; text-transform:uppercase; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Lab Notebook, Letterpressed",
+    "overview": "The personal site of an engineer who reads type specimens for fun. It carries itself like a well-set technical journal printed on near-black stock: a single warm gold ink used sparingly, a high-contrast serif for the name, monospace for the marginalia, and a clean grotesque for the running text. Depth comes from a faint graph-paper grid and generous vertical rhythm, never from boxes, shadows, or chrome. It works outward from type and space; the one moment of motion-as-spectacle is the Lanyard badge swinging on its physics in the hero.",
+    "keyCharacteristics": [
+      "Tinted near-black canvas (#0B0B0C), never pure black, under a faint graph-paper grid.",
+      "One gold accent (#C9A227), spent rarely and deliberately.",
+      "High-contrast serif display + monospace labels + grotesque body.",
+      "Hierarchy from scale, weight, and whitespace; almost no borders, zero nested cards.",
+      "Restrained motion everywhere except the Lanyard."
+    ],
+    "rules": [
+      { "name": "The One Voice Rule", "body": "Signal Gold appears on ≤10% of any given screen. There is exactly one filled gold button per view (GitHub); everything else is ghost.", "section": "colors" },
+      { "name": "The No-Pure-Black Rule", "body": "The canvas is #0B0B0C, never #000. Pure black is forbidden.", "section": "colors" },
+      { "name": "The Two-Voice Name Rule", "body": "The display name is always exactly two lines: first name roman off-white, last name italic gold.", "section": "typography" },
+      { "name": "The Mono-For-Machines Rule", "body": "Metadata is monospace uppercase; prose is grotesque; voice (name, tagline, titles) is serif. Never mix the roles.", "section": "typography" },
+      { "name": "The Flat-By-Default Rule", "body": "Surfaces are flat at rest. No box-shadow, no backdrop-filter, no neon glow. Reach for spacing, not shadow.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do keep the canvas tinted near-black (#0B0B0C) under a single fixed faint graph-paper grid overlay.",
+      "Do render the display name as two lines: first name roman Off-White, last name italic Signal Gold.",
+      "Do reserve Signal Gold (#C9A227) for ≤10% of any screen and exactly one filled button (GitHub).",
+      "Do build Projects and Experience as clean lists, leaning on scale and whitespace for hierarchy.",
+      "Do use monospace uppercase for all metadata and cap body text at ~70ch.",
+      "Do keep motion restrained and let the Lanyard be the only spectacle.",
+      "Do honor prefers-reduced-motion: freeze the ticker, scroll-in animations, and Lanyard auto-motion."
+    ],
+    "donts": [
+      "Don't use pure black (#000); the tint on #0B0B0C is the point.",
+      "Don't use Inter or system-default fonts for display or body.",
+      "Don't use purple→blue gradients anywhere.",
+      "Don't use glassmorphism — no frosted translucent panels or backdrop-filter blurs.",
+      "Don't nest cards inside cards, or default to a card grid where a list reads better.",
+      "Don't add dark-mode neon glows or box-shadow drops; this system is flat with tonal layering.",
+      "Don't use bounce or elastic easing; ease-out only, small distances.",
+      "Don't use emoji as icons."
+    ]
+  }
+}

@@ -1,0 +1,86 @@
+/*
+ * theme.css — atmosphere layer that Tailwind tokens don't cover:
+ * the fixed graph-paper grid, signature keyframes, and reduced-motion rules.
+ * Token primitives (color, type, spacing) live in tailwind.config.js / DESIGN.md.
+ */
+
+:root {
+  --grid-size: 38px;
+  --grid-line: rgba(255, 255, 255, 0.022);
+}
+
+/*
+ * The graph-paper grid. A single FIXED full-page overlay, not per-section.
+ * Sits behind all content (pointer-events: none, -z), tinted near-black canvas
+ * shows through. Faint — felt more than seen.
+ */
+.grid-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-color: #0b0b0c;
+  background-image:
+    linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+  background-size: var(--grid-size) var(--grid-size);
+  /* fade the grid out toward the edges so it never reads as a hard table */
+  -webkit-mask-image: radial-gradient(ellipse 110% 80% at 50% 28%, #000 55%, transparent 100%);
+  mask-image: radial-gradient(ellipse 110% 80% at 50% 28%, #000 55%, transparent 100%);
+}
+
+/* Marquee track — two identical halves; translate -50% loops seamlessly. */
+.ticker-track {
+  display: inline-flex;
+  white-space: nowrap;
+  will-change: transform;
+}
+.ticker-mask {
+  /* feather both ends so segments enter/exit instead of snapping at the edge */
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
+  mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
+}
+.ticker:hover .ticker-track {
+  animation-play-state: paused;
+}
+
+/*
+ * Scroll-reveal. Elements start translated+faded; the .is-visible class
+ * (added by IntersectionObserver) eases them in. ease-out, small distance,
+ * no bounce. JS-disabled / reduced-motion fall back to fully visible.
+ */
+.reveal {
+  opacity: 0;
+  transform: translateY(14px);
+  transition:
+    opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/*
+ * prefers-reduced-motion: freeze the marquee, the reveal animations,
+ * the pulsing dot, and smooth scrolling. Nothing moves unless asked.
+ */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+  .ticker-track {
+    animation: none !important;
+  }
+}
