@@ -1,7 +1,6 @@
 // Single-page shell. Fixed grid backdrop behind everything; a skip link; the
-// sticky nav; then hero, ticker, and the anchor-scroll sections in order.
+// sticky nav; then hero and the anchor-scroll sections in order.
 import { Nav } from './components/Nav'
-import { Ticker } from './components/Ticker'
 import { Hero } from './sections/Hero'
 import { Projects } from './sections/Projects'
 import { Experience } from './sections/Experience'
@@ -27,7 +26,6 @@ function App() {
 
       <main id="main">
         <Hero />
-        <Ticker />
         <Projects />
         <Experience />
         <About />

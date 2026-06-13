@@ -48,14 +48,9 @@ export default {
           '0%, 100%': { opacity: '1' },
           '50%': { opacity: '0.4' },
         },
-        marquee: {
-          from: { transform: 'translateX(0)' },
-          to: { transform: 'translateX(-50%)' },
-        },
       },
       animation: {
         'pulse-dot': 'pulse_dot 2s ease-in-out infinite',
-        marquee: 'marquee 38s linear infinite',
       },
     },
   },

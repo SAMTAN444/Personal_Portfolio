@@ -1,0 +1,11 @@
+# Personal documents — don't commit your résumé / private PDFs.
+# (Keep the folder + its README tracked.)
+documents/*
+!documents/README.md
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+.env

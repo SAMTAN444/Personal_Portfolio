@@ -30,10 +30,30 @@ declare module '@react-three/fiber' {
   }
 }
 
-// 1x1 transparent pixel — lets useTexture be called unconditionally when a
-// front/back image isn't supplied.
-const BLANK_PIXEL =
-  'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==';
+// Load an image purely as a canvas-drawing source (NOT a GPU texture). The
+// front/back face art is only ever composited into the card atlas via 2D
+// canvas; routing it through drei's useTexture made three upload it to the GPU,
+// and an absent face (a 1x1 blank) throws "texSubImage2D: bad image data" and
+// loses the WebGL context. A plain image-element decode avoids the GPU entirely.
+function useImageElement(src: string | null): HTMLImageElement | null {
+  const [img, setImg] = useState<HTMLImageElement | null>(null);
+  useEffect(() => {
+    if (!src) {
+      setImg(null);
+      return;
+    }
+    let alive = true;
+    const el = new Image();
+    el.onload = () => {
+      if (alive) setImg(el);
+    };
+    el.src = src;
+    return () => {
+      alive = false;
+    };
+  }, [src]);
+  return img;
+}
 
 // The card model's front face is UV-mapped to the LEFT half of the texture
 // atlas and the back face to the RIGHT half (measured from card.glb). Each
@@ -171,25 +191,30 @@ function Band({
 
   const { nodes, materials } = useGLTF(cardGLB) as any;
   const texture = useTexture(lanyardImage || lanyard);
-  // useTexture must be called unconditionally; use a blank pixel when an image
-  // isn't supplied for a given face, then skip compositing it below.
-  const frontTex = useTexture(frontImage || BLANK_PIXEL);
-  const backTex = useTexture(backImage || BLANK_PIXEL);
+  // Face art is decoded as plain images (canvas sources only) — never uploaded
+  // as GPU textures. null until each decodes; compositing skips absent faces.
+  const frontImg = useImageElement(frontImage);
+  const backImg = useImageElement(backImage);
 
   // Composite the front/back images into the card's texture atlas (front = left
   // half, back = right half). Each image is drawn aspect-preserving (no stretch).
   const cardMap = useMemo(() => {
     const baseMap = materials.base.map as THREE.Texture;
-    if (!frontImage && !backImage) return baseMap;
+    if (!frontImg && !backImg) return baseMap;
 
     const baseImg = baseMap.image as any;
     const W = baseImg.width;
     const H = baseImg.height;
+    // Supersample the composite so the custom face isn't capped at the baked
+    // atlas resolution — target ~2048px on the long side. Draw in W×H space.
+    const ss = Math.max(1, Math.round(2048 / Math.max(W, H)));
     const canvas = document.createElement('canvas');
-    canvas.width = W;
-    canvas.height = H;
+    canvas.width = W * ss;
+    canvas.height = H * ss;
     const ctx = canvas.getContext('2d');
     if (!ctx) return baseMap;
+    ctx.scale(ss, ss);
+    ctx.imageSmoothingQuality = 'high';
     // Keep the original baked atlas for the card edges and any untouched face.
     ctx.drawImage(baseImg, 0, 0, W, H);
 
@@ -212,8 +237,8 @@ function Band({
       ctx.restore();
     };
 
-    if (frontImage && frontTex.image) drawFitted(frontTex.image, FRONT_UV_RECT);
-    if (backImage && backTex.image) drawFitted(backTex.image, BACK_UV_RECT);
+    if (frontImg) drawFitted(frontImg, FRONT_UV_RECT);
+    if (backImg) drawFitted(backImg, BACK_UV_RECT);
 
     const composite = new THREE.CanvasTexture(canvas);
     composite.colorSpace = THREE.SRGBColorSpace;
@@ -221,7 +246,7 @@ function Band({
     composite.anisotropy = 16;
     composite.needsUpdate = true;
     return composite;
-  }, [frontImage, backImage, imageFit, frontTex, backTex, materials.base.map]);
+  }, [frontImg, backImg, imageFit, materials.base.map]);
   const [curve] = useState(
     () =>
       new THREE.CatmullRomCurve3([new THREE.Vector3(), new THREE.Vector3(), new THREE.Vector3(), new THREE.Vector3()])

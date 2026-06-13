@@ -9,8 +9,9 @@
 
   html {
     scroll-behavior: smooth;
-    /* offset anchor targets so the sticky nav never covers a section heading */
-    scroll-padding-top: 6rem;
+    /* Single anchor offset = sticky nav height (4rem). Sections add their own
+       modest top padding for the gap; see Section's scroll-mt / pt. */
+    scroll-padding-top: 4rem;
     -webkit-text-size-adjust: 100%;
   }
 

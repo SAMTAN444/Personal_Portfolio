@@ -14,11 +14,7 @@ export function Contact() {
 
       <Reveal>
         <p className="prose-measure font-display text-tagline italic text-muted">
-          Open to AI/ML and backend roles. The fastest way to reach me is{' '}
-          <a href={`mailto:${LINKS.email}`} className="text-gold underline-offset-4 hover:underline">
-            email
-          </a>
-          .
+          Open to AI/ML and backend roles for 2027 internships!
         </p>
       </Reveal>
 

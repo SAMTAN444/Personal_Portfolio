@@ -11,7 +11,11 @@ export function Section({
   className?: string
 }) {
   return (
-    <section id={id} className={`scroll-mt-24 py-section ${className}`} aria-labelledby={`${id}-heading`}>
+    <section
+      id={id}
+      className={`pb-section pt-12 ${className}`}
+      aria-labelledby={`${id}-heading`}
+    >
       <div className="mx-auto w-full max-w-6xl px-6 sm:px-8">{children}</div>
     </section>
   )

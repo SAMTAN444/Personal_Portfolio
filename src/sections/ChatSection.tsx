@@ -6,7 +6,7 @@ import { Section } from '../components/Section'
 import { SectionHeading } from '../components/SectionHeading'
 import { PipelinePanel } from './PipelinePanel'
 import { SendIcon } from '../components/icons'
-import { askMyAI, type Citation } from '../lib/rag'
+import { askMyAI, type Citation, type RagTrace } from '../lib/rag'
 import { onPrefillChat } from '../lib/chatBus'
 
 type Message = {
@@ -17,15 +17,17 @@ type Message = {
 }
 
 const SUGGESTIONS = [
-  'What did you build at Singtel?',
-  'Tell me about the RAG system.',
-  'What is Rank-Order-Centroid scoring?',
+  'What did you do at Singtel?',
+  'What did you do at Fleur Capital?',
+  'How does Optima recommend schools?',
 ]
 
 export function ChatSection() {
   const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput] = useState('')
   const [pending, setPending] = useState(false)
+  const [trace, setTrace] = useState<RagTrace | null>(null)
+  const [lastQuery, setLastQuery] = useState('')
   const nextId = useRef(0)
   const inputRef = useRef<HTMLInputElement>(null)
 
@@ -47,10 +49,12 @@ export function ChatSection() {
     const userMsg: Message = { id: nextId.current++, role: 'user', text: trimmed }
     setMessages((prev) => [...prev, userMsg])
     setInput('')
+    setLastQuery(trimmed)
     setPending(true)
 
     try {
       const res = await askMyAI(trimmed)
+      setTrace(res.trace ?? null)
       setMessages((prev) => [
         ...prev,
         { id: nextId.current++, role: 'assistant', text: res.answer, citations: res.citations },
@@ -94,8 +98,9 @@ export function ChatSection() {
             {messages.length === 0 ? (
               <div className="m-auto max-w-sm text-center">
                 <p className="prose-measure text-base leading-relaxed text-muted">
-                  Ask about my projects, experience, or stack. This is a stub today — soon it answers
-                  from a RAG pipeline over my own corpus.
+                  Ask about my projects, experience, or stack. Answers come from a small RAG
+                  pipeline over my own documents — grounded, source-cited, and it&rsquo;ll say when
+                  it doesn&rsquo;t know. Watch it work in the panel.
                 </p>
                 <ul className="mt-5 flex flex-col items-center gap-2">
                   {SUGGESTIONS.map((s) => (
@@ -147,8 +152,8 @@ export function ChatSection() {
           </form>
         </div>
 
-        {/* Reserved "how it works" slot */}
-        <PipelinePanel />
+        {/* Live "how it works" — visualizes the real retrieval trace per query. */}
+        <PipelinePanel trace={trace} pending={pending} query={lastQuery} />
       </div>
     </Section>
   )
@@ -166,7 +171,16 @@ function ChatBubble({ message }: { message: Message }) {
           isUser ? 'bg-panel text-offwhite' : 'border border-grid text-muted'
         }`}
       >
-        {message.text}
+        {/* Render prose as paragraphs so blank-line breaks read cleanly. */}
+        {message.text
+          .split(/\n{2,}/)
+          .map((para) => para.trim())
+          .filter(Boolean)
+          .map((para, i) => (
+            <p key={i} className={i > 0 ? 'mt-3' : undefined}>
+              {para}
+            </p>
+          ))}
         {message.citations && message.citations.length > 0 && (
           <ul className="mt-3 flex flex-col gap-1 border-t border-grid pt-3">
             {message.citations.map((c) => (

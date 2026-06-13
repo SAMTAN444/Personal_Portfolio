@@ -47,6 +47,14 @@ export function ArrowRightIcon(props: IconProps) {
   )
 }
 
+export function ArrowUpRightIcon(props: IconProps) {
+  return (
+    <svg {...base(props)} stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round">
+      <path d="M7 17 17 7M7 7h10v10" />
+    </svg>
+  )
+}
+
 export function DownloadIcon(props: IconProps) {
   return (
     <svg {...base(props)} stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round">

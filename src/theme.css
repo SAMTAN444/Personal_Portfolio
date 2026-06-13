@@ -29,21 +29,6 @@
   mask-image: radial-gradient(ellipse 110% 80% at 50% 28%, #000 55%, transparent 100%);
 }
 
-/* Marquee track — two identical halves; translate -50% loops seamlessly. */
-.ticker-track {
-  display: inline-flex;
-  white-space: nowrap;
-  will-change: transform;
-}
-.ticker-mask {
-  /* feather both ends so segments enter/exit instead of snapping at the edge */
-  -webkit-mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
-  mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
-}
-.ticker:hover .ticker-track {
-  animation-play-state: paused;
-}
-
 /*
  * Scroll-reveal. Elements start translated+faded; the .is-visible class
  * (added by IntersectionObserver) eases them in. ease-out, small distance,
@@ -62,8 +47,8 @@
 }
 
 /*
- * prefers-reduced-motion: freeze the marquee, the reveal animations,
- * the pulsing dot, and smooth scrolling. Nothing moves unless asked.
+ * prefers-reduced-motion: freeze the reveal animations, the pulsing dot, and
+ * smooth scrolling. Nothing moves unless asked.
  */
 @media (prefers-reduced-motion: reduce) {
   html {
@@ -79,8 +64,5 @@
   .reveal {
     opacity: 1;
     transform: none;
-  }
-  .ticker-track {
-    animation: none !important;
   }
 }

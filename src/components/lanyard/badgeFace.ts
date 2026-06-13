@@ -9,9 +9,15 @@
  * raster PNG uploads cleanly.) System serif + mono fonts so it draws
  * synchronously without waiting on web-font loads.
  *
+ * The portrait photo is loaded asynchronously and cover-cropped (focal-biased
+ * toward the face) into a window near the top of the card, so the builder is
+ * async and the result is cached after the first successful draw.
+ *
  * Brand-matched: tinted near-black face, warm off-white name, italic gold last
  * name and accents. Portrait ratio to match the card's UV rect.
  */
+
+import portrait from './portrait.jpg'
 
 const INK = '#0B0B0C'
 const PANEL = '#131316'
@@ -26,18 +32,69 @@ const MONO = "'JetBrains Mono', 'Courier New', monospace"
 
 const W = 520
 const H = 760
+// Supersample factor: draw at 2x so the rasterized face (text + photo) stays
+// crisp when composited into the card's texture atlas. Coordinates below stay in
+// W×H space; the context is scaled once.
+const SS = 2
 
 let cached: string | null = null
+let portraitImg: HTMLImageElement | null = null
+
+/** Load (and memoize) the portrait as a decoded image element for canvas compositing. */
+function loadPortrait(): Promise<HTMLImageElement> {
+  if (portraitImg) return Promise.resolve(portraitImg)
+  return new Promise((resolve, reject) => {
+    const img = new Image()
+    img.onload = () => {
+      portraitImg = img
+      resolve(img)
+    }
+    img.onerror = reject
+    img.src = portrait
+  })
+}
+
+/**
+ * Draw `img` to fill the (x,y,w,h) box (cover crop, no stretch). `focalX/Y` in
+ * [0,1] bias which part stays visible when the image overflows the box —
+ * focalY > 0.5 keeps the lower portion (the face here) in frame.
+ */
+function drawCover(
+  ctx: CanvasRenderingContext2D,
+  img: HTMLImageElement,
+  x: number,
+  y: number,
+  w: number,
+  h: number,
+  focalX = 0.5,
+  focalY = 0.5
+): void {
+  const scale = Math.max(w / img.width, h / img.height)
+  const dw = img.width * scale
+  const dh = img.height * scale
+  const dx = x + (w - dw) * focalX
+  const dy = y + (h - dh) * focalY
+  ctx.save()
+  ctx.beginPath()
+  ctx.rect(x, y, w, h)
+  ctx.clip()
+  ctx.drawImage(img, dx, dy, dw, dh)
+  ctx.restore()
+}
 
 /** Draw the badge face once and return it as a PNG data URL (memoized). */
-export function getBadgeFrontImage(): string {
+export async function getBadgeFrontImage(): Promise<string> {
   if (cached) return cached
 
+  const img = await loadPortrait()
+
   const canvas = document.createElement('canvas')
-  canvas.width = W
-  canvas.height = H
+  canvas.width = W * SS
+  canvas.height = H * SS
   const ctx = canvas.getContext('2d')
   if (!ctx) return ''
+  ctx.scale(SS, SS)
+  ctx.imageSmoothingQuality = 'high'
 
   // Face: tinted near-black with a faint vertical gradient.
   const grad = ctx.createLinearGradient(0, 0, 0, H)
@@ -70,34 +127,45 @@ export function getBadgeFrontImage(): string {
   ctx.fillText('ST', 435, 100)
   ctx.textAlign = 'left'
 
+  // Portrait window — cover-cropped, focal-biased toward the face.
+  const px = 46
+  const py = 138
+  const pw = W - 92
+  const ph = 300
+  drawCover(ctx, img, px, py, pw, ph, 0.5, 0.62)
+  // Hairline frame around the photo to seat it on the card.
+  ctx.strokeStyle = GRID
+  ctx.lineWidth = 2
+  ctx.strokeRect(px, py, pw, ph)
+
   // Name — roman off-white, italic gold.
   ctx.fillStyle = OFFWHITE
-  ctx.font = `600 92px ${SERIF}`
-  ctx.fillText('SAMUEL', 44, 372)
+  ctx.font = `600 72px ${SERIF}`
+  ctx.fillText('SAMUEL', 44, 512)
   ctx.fillStyle = GOLD
-  ctx.font = `italic 600 92px ${SERIF}`
-  ctx.fillText('TAN', 44, 460)
+  ctx.font = `italic 600 72px ${SERIF}`
+  ctx.fillText('TAN', 44, 582)
 
   // Role.
   ctx.fillStyle = GOLD
-  ctx.font = `500 26px ${MONO}`
+  ctx.font = `500 24px ${MONO}`
   ctx.letterSpacing = '3px'
-  ctx.fillText('FULL-STACK · AI/ML', 46, 532)
+  ctx.fillText('FULL-STACK · AI/ML', 46, 632)
 
   // Divider.
   ctx.strokeStyle = GRID
   ctx.beginPath()
-  ctx.moveTo(46, 578)
-  ctx.lineTo(474, 578)
+  ctx.moveTo(46, 668)
+  ctx.lineTo(474, 668)
   ctx.stroke()
 
   // Meta.
   ctx.fillStyle = MUTED
-  ctx.font = `500 24px ${MONO}`
+  ctx.font = `500 22px ${MONO}`
   ctx.letterSpacing = '2px'
-  ctx.fillText('NTU COMPUTER SCIENCE', 46, 638)
+  ctx.fillText('NTU COMPUTER SCIENCE', 46, 708)
   ctx.fillStyle = FAINT
-  ctx.fillText('@SAMTAN444', 46, 688)
+  ctx.fillText('@SAMTAN444', 46, 740)
 
   ctx.letterSpacing = '0px'
   cached = canvas.toDataURL('image/png')

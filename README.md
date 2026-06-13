@@ -38,13 +38,23 @@ src/
 tailwind.config.js design tokens (mirrors DESIGN.md frontmatter)
 ```
 
-## The RAG chatbot (wiring it up later)
+## The RAG chatbot
 
-All retrieval/answer logic is behind `askMyAI(query): Promise<ChatResponse>` in
-`src/lib/rag.ts`. `ChatResponse` already carries optional `citations`, and the
-`ChatSection` renders them when present. `src/sections/PipelinePanel.tsx` is a
-reserved slot for the retrieval visualizer (anchor `#pipeline`). To go live, point
-`VITE_API_BASE_URL` at the FastAPI service and implement the `/chat` response.
+The backend lives in [`backend/`](backend/README.md) — a FastAPI service doing
+retrieval-augmented answers over your own documents with **Amazon Bedrock**
+(Claude + Titan embeddings) and **Postgres/pgvector**.
+
+- **Add your documents**: drop all your PDFs and your résumé in
+  [`backend/documents/`](backend/documents/README.md), then run `python -m app.ingest`.
+- **Run it**: see `backend/README.md` (Docker Postgres + `uvicorn`).
+- **Connect the site**: set `VITE_API_BASE_URL=http://localhost:8000` in the root
+  `.env` and restart `npm run dev`.
+
+On the frontend, all retrieval/answer logic stays behind
+`askMyAI(query): Promise<ChatResponse>` in `src/lib/rag.ts` — empty
+`VITE_API_BASE_URL` = canned mock; set it = live backend. `ChatResponse` carries
+`citations` (rendered by `ChatSection`), and `src/sections/PipelinePanel.tsx` is the
+reserved slot for the retrieval visualizer (anchor `#pipeline`).
 
 ## The Lanyard
 

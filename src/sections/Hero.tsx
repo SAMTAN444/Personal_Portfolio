@@ -21,8 +21,6 @@ export function Hero() {
           <Reveal>
             <div className="flex items-center gap-4">
               <Eyebrow>{SITE.domain}</Eyebrow>
-              <span className="h-px flex-1 bg-grid" aria-hidden="true" />
-              <Eyebrow className="hidden whitespace-nowrap sm:inline">SINGAPORE · 2027</Eyebrow>
             </div>
           </Reveal>
 
@@ -66,7 +64,7 @@ export function Hero() {
         </div>
 
         {/* Right column — the Lanyard badge */}
-        <div className="order-1 flex min-h-[320px] items-start justify-center md:order-2 md:min-h-[460px]">
+        <div className="order-1 flex min-h-[360px] items-start justify-center md:order-2 md:min-h-[600px]">
           <LanyardBadge />
         </div>
       </div>

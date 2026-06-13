@@ -3,6 +3,7 @@
 import { Section } from '../components/Section'
 import { SectionHeading } from '../components/SectionHeading'
 import { Reveal } from '../components/Reveal'
+import { ArrowUpRightIcon } from '../components/icons'
 import { EXPERIENCE } from '../data/content'
 
 export function Experience() {
@@ -24,6 +25,17 @@ export function Experience() {
             <p className="prose-measure mt-3 text-base leading-relaxed text-muted">
               {item.description}
             </p>
+            {item.link && (
+              <a
+                href={item.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-3 inline-flex items-center gap-1.5 font-mono text-label uppercase text-muted transition-colors hover:text-gold"
+              >
+                {item.linkLabel ?? 'View'}
+                <ArrowUpRightIcon width={13} height={13} />
+              </a>
+            )}
           </Reveal>
         ))}
       </ol>
