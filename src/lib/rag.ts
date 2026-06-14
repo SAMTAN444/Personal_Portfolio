@@ -15,11 +15,13 @@ export type Citation = {
   url?: string
 }
 
-/** One chunk the vector search returned, with its cosine score. */
+/** One chunk the vector search returned, with its cosine score and whether the
+ *  model actually cited it in the answer. */
 export type RetrievedChunk = {
   source: string
   page: number
   similarity: number
+  cited?: boolean
 }
 
 /** The real per-query pipeline record the backend emits (see backend/app/main.py). */

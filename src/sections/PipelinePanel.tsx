@@ -60,11 +60,21 @@ export function PipelinePanel({
         <Stage n="03" label="VECTOR SEARCH" active={live}>
           {t ? `top-${t.topK} · cosine · ${t.timings.searchMs}ms` : '—'}
           {t && t.retrieved.length > 0 && (
-            <ul className="mt-3 flex flex-col gap-1.5">
-              {t.retrieved.map((c, i) => (
-                <Bar key={`${c.source}-${c.page}-${i}`} label={chunkLabel(c.source, c.page)} value={c.similarity} threshold={t.threshold} />
-              ))}
-            </ul>
+            <>
+              <ul className="mt-3 flex flex-col gap-1.5">
+                {t.retrieved.map((c, i) => (
+                  <Bar
+                    key={`${c.source}-${c.page}-${i}`}
+                    label={chunkLabel(c.source, c.page)}
+                    value={c.similarity}
+                    cited={c.cited}
+                  />
+                ))}
+              </ul>
+              <p className="mt-2 text-[0.65rem] leading-relaxed text-faint/70">
+                Gold = cited in the answer · faint = retrieved but unused
+              </p>
+            </>
           )}
         </Stage>
 
@@ -89,7 +99,7 @@ export function PipelinePanel({
           {t
             ? t.refused
               ? 'refused — no model call'
-              : `${t.timings.generateMs}ms · ${t.retrieved.length} sources cited`
+              : `${t.timings.generateMs}ms · ${t.retrieved.filter((c) => c.cited).length} sources cited`
             : '—'}
         </Stage>
       </ol>
@@ -127,21 +137,20 @@ function Stage({
   )
 }
 
-function Bar({ label, value, threshold }: { label: string; value: number; threshold: number }) {
+function Bar({ label, value, cited }: { label: string; value: number; cited?: boolean }) {
   const pct = Math.max(4, Math.min(100, value * 120)) // scale cosine (~0.3–0.7) into a readable bar
-  const hot = value >= threshold
   return (
     <li className="flex items-center gap-3">
-      <span className="w-[8.5rem] shrink-0 truncate text-faint" title={label}>
+      <span className={`w-[8.5rem] shrink-0 truncate ${cited ? 'text-muted' : 'text-faint'}`} title={label}>
         {label}
       </span>
       <span className="relative h-1 flex-1 overflow-hidden rounded-full bg-grid">
         <span
-          className={`absolute inset-y-0 left-0 rounded-full ${hot ? 'bg-gold' : 'bg-faint'}`}
+          className={`absolute inset-y-0 left-0 rounded-full ${cited ? 'bg-gold' : 'bg-faint/50'}`}
           style={{ width: `${pct}%` }}
         />
       </span>
-      <span className={`w-10 shrink-0 text-right tabular-nums ${hot ? 'text-gold' : 'text-faint'}`}>
+      <span className={`w-10 shrink-0 text-right tabular-nums ${cited ? 'text-gold' : 'text-faint'}`}>
         {value.toFixed(2)}
       </span>
     </li>

@@ -10,6 +10,7 @@ timings — so the site's "How it works" panel can visualize the actual pipeline
 
 from __future__ import annotations
 
+import re
 import time
 
 from fastapi import FastAPI, HTTPException, Request
@@ -83,6 +84,7 @@ class RetrievedChunk(BaseModel):
     source: str
     page: int
     similarity: float
+    cited: bool = False  # did the model actually use this chunk in its answer?
 
 
 class Timings(BaseModel):
@@ -108,9 +110,12 @@ class ChatResponse(BaseModel):
     trace: Trace | None = None
 
 
-def _to_citations(chunks: list[Chunk]) -> list[Citation]:
+def _to_citations(chunks: list[Chunk], cited_idx: set[int]) -> list[Citation]:
+    """Build citations only for the chunks the model actually cited (1-based)."""
     citations: list[Citation] = []
     for i, c in enumerate(chunks, start=1):
+        if i not in cited_idx:
+            continue
         title = c["source"] + (f" — p.{c['page']}" if c["page"] else "")
         snippet = " ".join(c["content"].split())[:180]
         citations.append(Citation(id=str(i), title=title, snippet=snippet))
@@ -148,9 +153,10 @@ def chat(req: ChatRequest, request: Request) -> ChatResponse:
 
     # 3) Relevance gate → either refuse (no model call) or generate a grounded answer.
     generate_ms = 0.0
+    cited_idx: set[int] = set()
+    citations: list[Citation] = []
     if refused:
         answer = OUT_OF_SCOPE
-        citations: list[Citation] = []
     else:
         chunks = [
             Chunk(
@@ -165,7 +171,10 @@ def chat(req: ChatRequest, request: Request) -> ChatResponse:
         t3 = time.perf_counter()
         answer = generate_answer(query, chunks)
         generate_ms = (time.perf_counter() - t3) * 1000
-        citations = _to_citations(chunks)
+        # The model cites sources inline as [1], [3], … — surface only those, so the
+        # citation list reflects what was actually used, not everything retrieved.
+        cited_idx = {n for n in (int(m) for m in re.findall(r"\[(\d+)\]", answer)) if 1 <= n <= len(chunks)}
+        citations = _to_citations(chunks, cited_idx)
 
     trace = Trace(
         embedModel=settings.embed_model,
@@ -175,8 +184,13 @@ def chat(req: ChatRequest, request: Request) -> ChatResponse:
         bestSimilarity=round(float(best), 4),
         refused=refused,
         retrieved=[
-            RetrievedChunk(source=h.source, page=h.page, similarity=round(h.similarity, 4))
-            for h in hits
+            RetrievedChunk(
+                source=h.source,
+                page=h.page,
+                similarity=round(h.similarity, 4),
+                cited=(i in cited_idx),
+            )
+            for i, h in enumerate(hits, start=1)
         ],
         timings=Timings(
             embedMs=round((t1 - t0) * 1000, 1),
