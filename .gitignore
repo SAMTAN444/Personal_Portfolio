@@ -22,3 +22,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Local env (dev only). .env.production and .env.example stay tracked.
+.env
