@@ -26,8 +26,8 @@ function App() {
 
       <main id="main">
         <Hero />
-        <Projects />
         <Experience />
+        <Projects />
         <About />
         <ChatSection />
         <Contact />

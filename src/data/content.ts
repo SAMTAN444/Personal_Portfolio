@@ -19,8 +19,8 @@ export const LINKS = {
 } as const
 
 export const NAV_LINKS = [
-  { label: 'PROJECTS', href: '#projects' },
   { label: 'EXPERIENCE', href: '#experience' },
+  { label: 'PROJECTS', href: '#projects' },
   { label: 'ABOUT', href: '#about' },
   { label: 'CHAT', href: '#chat' },
   { label: 'CONTACT', href: '#contact' },
@@ -37,9 +37,9 @@ export type Project = {
 
 export const PROJECTS: Project[] = [
   {
-    title: 'This site / Personal RAG system',
+    title: 'My Personal Portfolio Website',
     description:
-      'Learning frontend design while building a RAG chatbot that answers questions from my own documents, cites sources, and avoids making up answers using the Anthropic API and embeddings.',
+      'Improving frontend design while building a RAG chatbot that answers questions from my own documents, cites sources, and avoids making up answers using the Anthropic API and embeddings.',
     stack: ['FastAPI', 'fastembed', 'Anthropic API', 'React', 'TypeScript'],
     inProgress: true,
   },
@@ -67,6 +67,7 @@ export type Experience = {
   description: string
   link?: string
   linkLabel?: string
+  logo?: string
 }
 
 export const EXPERIENCE: Experience[] = [
@@ -76,6 +77,7 @@ export const EXPERIENCE: Experience[] = [
     dates: 'Aug–Dec 2026',
     description:
       'Will be working on multimodal prototypes using LLMs, vision-language models, speech-to-text, and text-to-speech systems, deployed on AWS SageMaker for testing and evaluation.',
+    logo: '/logos/htx-trim.png',
   },
   {
     org: 'Singtel',
@@ -83,6 +85,7 @@ export const EXPERIENCE: Experience[] = [
     dates: 'May–Jul 2026',
     description:
       'Part of Singtel’s Sales Channel team, working on Java/Spring Boot applications for non-production feature development, with CI/CD via Bitbucket and Bamboo and AWS-based deployment and monitoring.',
+    logo: '/logos/singtel-trim.png',
   },
   {
     org: 'YouthTechSG',
@@ -92,6 +95,7 @@ export const EXPERIENCE: Experience[] = [
       'Selected for a 6-month YouthTech open-source program contributing to FormSG (Singapore government platform), currently working on internationalization (i18n) enhancements.',
     link: 'https://github.com/opengovsg/FormSG/pull/9497',
     linkLabel: 'FormSG PR #9497',
+    logo: '/logos/youthtech-trim.png',
   },
   {
     org: 'Fleur Capital',

@@ -11,7 +11,7 @@ import { prefillChat } from '../lib/chatBus'
 export function Projects() {
   return (
     <Section id="projects">
-      <SectionHeading id="projects" index="01" eyebrow="SELECTED WORK" title="Projects" />
+      <SectionHeading id="projects" index="02" eyebrow="SELECTED WORK" title="Projects" />
 
       <ul className="flex flex-col">
         {PROJECTS.map((project, i) => (
