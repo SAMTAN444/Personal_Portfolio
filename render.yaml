@@ -1,0 +1,20 @@
+# Render Blueprint — deploys the FastAPI RAG backend (backend/) as a Docker web
+# service. In the Render dashboard, set the two `sync: false` secrets:
+#   ANTHROPIC_API_KEY  — your Anthropic key
+#   CORS_ORIGINS       — your frontend origin(s) once the site is up, e.g.
+#                        https://samueltan.dev,https://www.samueltan.dev
+#                        (or the https://dxxxx.cloudfront.net URL before DNS is live)
+services:
+  - type: web
+    name: samuel-portfolio-rag
+    runtime: docker
+    rootDir: backend
+    plan: free
+    healthCheckPath: /health
+    envVars:
+      - key: ANTHROPIC_API_KEY
+        sync: false
+      - key: CORS_ORIGINS
+        sync: false
+      - key: ANTHROPIC_MODEL
+        value: claude-haiku-4-5

@@ -6,11 +6,11 @@ brand
 
 ## Users
 
-Technical recruiters, hiring managers, and engineers evaluating Samuel Tan for software / AI-ML roles. They arrive with limited time and a skeptical eye, often skimming dozens of portfolios in a sitting. Their context is a quick credibility check: *Can this person actually build production systems, and does the work hold up under scrutiny?* They want signal over noise — concrete projects, real engineering depth, and evidence of taste — not a marketing pitch. A subset will return later to interact with the RAG chatbot that answers questions about Samuel's work.
+Technical recruiters, hiring managers, and engineers evaluating Samuel Tan for software / AI-ML roles. They arrive with limited time and a skeptical eye, often skimming dozens of portfolios in a sitting. Their context is a quick credibility check: *Can this person actually build production systems, and does the work hold up under scrutiny?* They want signal over noise — concrete projects, real engineering depth, and evidence of taste — not a marketing pitch. A subset will use the RAG chatbot to ask questions about Samuel's work and watch how the retrieval actually runs.
 
 ## Product Purpose
 
-A single-page personal portfolio for a software / AI-ML engineer. It exists to convert a cold skim into a warm signal: that Samuel builds measured, production-grade systems and cares about craft. Success looks like a recruiter reaching the Contact section convinced enough to reach out, or engaging the RAG assistant to dig deeper. The site itself is part of the portfolio — its restraint and typographic precision are evidence, not decoration. It is built to later host a retrieval-augmented chatbot and a "how it works" pipeline visualizer without structural rework.
+A single-page personal portfolio for a software / AI-ML engineer. It exists to convert a cold skim into a warm signal: that Samuel builds measured systems, learns in the open, and cares about craft. Success looks like a recruiter reaching the Contact section convinced enough to reach out, or engaging the RAG assistant to dig deeper. The site itself is part of the portfolio — its restraint and typographic precision are evidence, not decoration. It hosts a retrieval-augmented chatbot that answers questions from Samuel's own documents (résumé, transcript, project write-ups, a recommendation letter) with grounded, source-cited replies and an honest out-of-scope refusal — alongside a live "How it works" panel that visualizes the real retrieval pipeline (embed → vector search with cosine scores → relevance gate → grounded answer).
 
 ## Brand Personality
 
@@ -33,7 +33,7 @@ This should not look like a venture-funded AI tool's marketing site. It should l
 
 ## Design Principles
 
-- **Show, don't tell.** Concrete projects with measurable depth (a Rank-Order-Centroid engine, a hybrid-search RAG pipeline) beat adjectives. Evidence over claims.
+- **Show, don't tell.** Concrete projects with measurable depth (a Rank-Order-Centroid recommendation engine, a document-grounded RAG chatbot you can interrogate) beat adjectives. Evidence over claims — and the chatbot exposes its own retrieval so the claim is verifiable.
 - **Type and space over boxes and borders.** Hierarchy comes from scale, weight, and whitespace — not from chrome, dividers, or nested containers.
 - **Restraint is the signal.** The only "wow" is the Lanyard physics. Everything else is calm. A portfolio that knows when to stop demonstrates judgment.
 - **The accent is rare on purpose.** A single gold accent carries meaning precisely because it is scarce. Spend it deliberately.
@@ -41,4 +41,4 @@ This should not look like a venture-funded AI tool's marketing site. It should l
 
 ## Accessibility & Inclusion
 
-Target WCAG 2.1 AA. Semantic landmarks, keyboard-navigable nav and controls, visible focus states, and sufficient contrast on the dark theme (warm off-white text on tinted near-black). Honor `prefers-reduced-motion`: disable the marquee ticker, scroll-in animations, and Lanyard auto-motion when set. Flawless responsive behavior from 360px to wide desktop. No reliance on color alone to convey state.
+Target WCAG 2.1 AA. Semantic landmarks, keyboard-navigable nav and controls, visible focus states, and sufficient contrast on the dark theme (warm off-white text on tinted near-black). Honor `prefers-reduced-motion`: disable scroll-in animations and Lanyard auto-motion when set. Flawless responsive behavior from 360px to wide desktop. No reliance on color alone to convey state.

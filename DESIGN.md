@@ -148,7 +148,7 @@ A tinted near-black canvas carrying warm off-white text and a single scarce gold
 - **Headline** (500, `clamp(1.75rem, 4vw, 2.5rem)`, line-height 1.05): Section titles (Projects, Experience, About…), serif.
 - **Title** (500, `1.125rem`, line-height 1.3): Project titles and role names within lists, grotesque or serif.
 - **Body** (400, `1rem`, line-height 1.65): Running text. Capped at ~70ch line length for readability.
-- **Label** (500, `0.75rem`, letter-spacing 0.12em, UPPERCASE): Eyebrows, nav, button text, tech-stack lines, skill chips, the ticker. Monospace. Separated with `//` or `·`.
+- **Label** (500, `0.75rem`, letter-spacing 0.12em, UPPERCASE): Eyebrows, nav, button text, tech-stack lines, skill chips, the pipeline-panel stages. Monospace. Separated with `//` or `·`.
 
 ### Named Rules
 **The Two-Voice Name Rule.** The display name is always exactly two lines: first name roman off-white, last name italic gold. Never one line, never all-gold, never all-roman.
@@ -186,13 +186,13 @@ Flat by doctrine. This system uses **tonal layering**, not shadows. Depth is con
 - **States:** Default Faint/Muted Gray, hover and active in Off-White / Signal Gold. Active section reflected in the nav. Collapses to a clean mobile menu below `md`. Keyboard-navigable with visible focus.
 
 ### Status Pill (signature)
-- Panel Black pill (`#111113`, fully rounded), monospace label `Incoming AI/ML @ HTX`, preceded by a single Status Green (`#5FB87A`) dot that pulses gently (and holds still under `prefers-reduced-motion`).
+- Panel Black pill (`#111113`, fully rounded), monospace label carrying a short live status (e.g. `SWE intern @ Singtel`), preceded by a single Status Green (`#5FB87A`) dot that pulses gently (and holds still under `prefers-reduced-motion`).
 
 ### Lanyard Badge (signature)
-- A real 3D badge (React Bits Lanyard) hanging from the top of the hero's right column, swinging on rope physics. Card face shows `SAMUEL TAN`, `Full-Stack · AI/ML`, `NTU Computer Science`, `@SAMTAN444`, with an `ST` initials block. Lazy-loaded behind a lightweight fallback; replaced by a static badge below `md`; auto-motion disabled under `prefers-reduced-motion`.
+- A real 3D badge (React Bits Lanyard) hanging from the top of the hero's right column, swinging on rope physics. The card face is a canvas-rendered texture composited onto the GLB, showing a portrait photo, `SAMUEL TAN`, `FULL-STACK · AI/ML`, `NTU COMPUTER SCIENCE`, `@SAMTAN444`, and an `ST` block. Lazy-loaded (`React.lazy`) behind a static-badge fallback that fades to the 3D scene; the same static badge replaces the canvas entirely below `md` and under `prefers-reduced-motion` (no WebGL mounted).
 
-### Status Ticker (signature)
-- Full-width horizontal marquee, monospace labeled segments (`TARGETING  AI/ML & Backend roles · 2027`, `LOCATION  Singapore`, `BUILDING  Production RAG system`), separated by `·`. Smooth infinite scroll, pauses on hover, fully disabled under `prefers-reduced-motion`.
+### Pipeline Panel (signature)
+- The live "How it works" visualizer beside the chat. A monospace, numbered stage list — `QUERY → EMBED → VECTOR SEARCH → RELEVANCE GATE → GROUNDED ANSWER` — populated per query from the backend's real retrieval trace: each retrieved chunk gets a thin score bar (Signal Gold above the relevance threshold, Faint below) with its cosine score, the gate shows a `PASS` / `OUT OF SCOPE` chip, and stages carry real timings. Honest by design — hybrid search and reranking appear only as a dimmed `Roadmap` line, never as active stages.
 
 ## 6. Do's and Don'ts
 
@@ -203,7 +203,7 @@ Flat by doctrine. This system uses **tonal layering**, not shadows. Depth is con
 - **Do** build Projects and Experience as clean *lists*, leaning on scale and whitespace for hierarchy.
 - **Do** use monospace uppercase for all metadata (labels, nav, tech stacks, dates) and cap body text at ~70ch.
 - **Do** keep motion restrained — short ease-out fade/translate — and let the Lanyard be the only spectacle.
-- **Do** honor `prefers-reduced-motion`: freeze the ticker, scroll-in animations, and Lanyard auto-motion.
+- **Do** honor `prefers-reduced-motion`: freeze scroll-in animations and Lanyard auto-motion.
 
 ### Don't:
 - **Don't** use pure black (`#000`); the tint on `#0B0B0C` is the point.
