@@ -9,7 +9,6 @@ export const SITE = {
   tagline: 'Software Engineer',
   intro:
     'Hello there! I am a Penultimate Computer Science student at NTU, looking for 2027 spring and summer internships in AI/ML and backend software engineering. Feel free to reach out if you have any opportunities or just want to chat about tech!',
-  resumeHref: '/resume.pdf',
 } as const
 
 export const LINKS = {
@@ -40,7 +39,7 @@ export const PROJECTS: Project[] = [
     title: 'My Personal Portfolio Website',
     description:
       'Improving frontend design while building a RAG chatbot that answers questions from my own documents, cites sources, and avoids making up answers using the Anthropic API and embeddings.',
-    stack: ['FastAPI', 'fastembed', 'Anthropic API', 'React', 'TypeScript'],
+    stack: ['React', 'TypeScript', 'FastAPI', 'Python', 'Anthropic API', 'fastembed', 'Docker', 'AWS'],
     inProgress: true,
   },
   {
@@ -54,7 +53,7 @@ export const PROJECTS: Project[] = [
   {
     title: 'Optima',
     description:
-      'Developed an A-grade project for NTUs Software Engineering (SC2002) module, creating a platform that helps students evaluate and compare secondary schools using personalized rankings, travel-time analysis, and smart recommendation features.',
+      'Developed an A-grade project for NTUs Software Engineering (SC2006) module, creating a platform that helps students evaluate and compare secondary schools using personalized rankings, travel-time analysis, and smart recommendation features.',
     stack: ['React', 'TypeScript', 'Node', 'PostgreSQL', 'Prisma', 'Docker'],
     repo: 'https://github.com/SAMTAN444/Optima',
   },
@@ -118,7 +117,6 @@ export const SKILLS = [
   'Python',
   'Java/Spring Boot',
   'PostgreSQL',
-  'pgvector',
   'MongoDB',
   'Docker',
   'AWS',

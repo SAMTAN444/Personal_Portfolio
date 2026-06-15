@@ -1,5 +1,5 @@
 // Sticky top nav. Left: brand mark. Center: smooth-scroll anchor links with the
-// active section reflected in gold. Right: status pill + RESUME. Below md it
+// active section reflected in gold. Right: status pill. Below md it
 // collapses to a single menu button revealing a clean panel.
 import { useEffect, useState } from 'react'
 import { NAV_LINKS, SITE } from '../data/content'
@@ -66,14 +66,6 @@ export function Nav() {
         {/* Right cluster (desktop) */}
         <div className="hidden items-center gap-4 md:flex">
           <StatusPill />
-          <a
-            href={SITE.resumeHref}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="font-mono text-label uppercase text-muted transition-colors hover:text-gold"
-          >
-            RESUME
-          </a>
         </div>
 
         {/* Mobile toggle */}
@@ -108,17 +100,8 @@ export function Nav() {
               </li>
             ))}
           </ul>
-          <div className="mt-6 flex items-center justify-between border-t border-grid pt-6">
+          <div className="mt-6 flex items-center border-t border-grid pt-6">
             <StatusPill />
-            <a
-              href={SITE.resumeHref}
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={() => setOpen(false)}
-              className="font-mono text-label uppercase text-muted transition-colors hover:text-gold"
-            >
-              RESUME
-            </a>
           </div>
         </div>
       )}

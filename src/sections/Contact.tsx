@@ -1,11 +1,11 @@
-// Contact — a closing line, the three links, and a résumé download. Big serif
-// invitation; the email is the one gold thread.
+// Contact — a closing line and the three links. Big serif invitation; the
+// email is the one gold thread.
 import { Section } from '../components/Section'
 import { SectionHeading } from '../components/SectionHeading'
 import { Button } from '../components/Button'
 import { Reveal } from '../components/Reveal'
-import { DownloadIcon, GithubIcon, LinkedinIcon, MailIcon } from '../components/icons'
-import { LINKS, SITE } from '../data/content'
+import { GithubIcon, LinkedinIcon, MailIcon } from '../components/icons'
+import { LINKS } from '../data/content'
 
 export function Contact() {
   return (
@@ -31,10 +31,6 @@ export function Contact() {
           <Button href={LINKS.linkedin} target="_blank" rel="noopener noreferrer">
             <LinkedinIcon />
             LinkedIn
-          </Button>
-          <Button href={SITE.resumeHref} target="_blank" rel="noopener noreferrer">
-            <DownloadIcon />
-            Download Résumé (PDF)
           </Button>
         </div>
       </Reveal>
