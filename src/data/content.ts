@@ -8,7 +8,7 @@ export const SITE = {
   status: 'SWE intern @ Singtel',
   tagline: 'Software Engineer',
   intro:
-    'Hello there! I am a Penultimate Computer Science student at NTU, looking for 2027 spring and summer internships in AI/ML and backend software engineering. Feel free to reach out if you have any opportunities or just want to chat about tech!',
+    'Hello there! I am a Penultimate Computer Science student at NTU, looking for 2027 spring and summer internships in software engineering and AI/ML. Feel free to reach out if you have any opportunities or just want to chat about tech!',
 } as const
 
 export const LINKS = {
@@ -92,8 +92,6 @@ export const EXPERIENCE: Experience[] = [
     dates: 'May-Nov 2026',
     description:
       'Selected for a 6-month YouthTech open-source program contributing to FormSG (Singapore government platform), currently working on internationalization (i18n) enhancements.',
-    link: 'https://github.com/opengovsg/FormSG/pull/9497',
-    linkLabel: 'FormSG PR #9497',
     logo: '/logos/youthtech-trim.png',
   },
   {
@@ -108,7 +106,7 @@ export const EXPERIENCE: Experience[] = [
 ]
 
 export const ABOUT_BIO =
-  'I am a Computer Science student with a second major in Business at NTU, currently on a school scholarship. I focus on consistently improving my skills through hands-on building and learning, while preparing for the AWS Solutions Architect – Associate certification. Outside of work, I enjoy hiking and scuba diving, which keeps me healthy and active outside of work.'
+  'Hi there! I am a Computer Science student at NTU with a second major in Business, on a school scholarship. I learn by breaking things and rebuilding them. When I am not doing that, you can find me underwater diving or halfway up a hiking trail.'
 
 export const SKILLS = [
   'TypeScript',

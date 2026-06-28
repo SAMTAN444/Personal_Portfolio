@@ -99,7 +99,7 @@ export function ChatSection() {
               <div className="m-auto max-w-sm text-center">
                 <p className="prose-measure text-base leading-relaxed text-muted">
                   Ask about my projects, experience, or stack. Answers come from a small RAG
-                  pipeline over my own documents — grounded, source-cited, and it&rsquo;ll say when
+                  pipeline over my own documents, grounded, source-cited, and it&rsquo;ll say when
                   it doesn&rsquo;t know. Watch it work in the panel.
                 </p>
                 <ul className="mt-5 flex flex-col items-center gap-2">

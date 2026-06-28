@@ -14,7 +14,7 @@ export function Contact() {
 
       <Reveal>
         <p className="prose-measure font-display text-tagline italic text-muted">
-          Open to AI/ML and backend roles for 2027 internships!
+          Open to 2027 internships (Jan-May & May-Aug) in software engineering and AI/ML
         </p>
       </Reveal>
 

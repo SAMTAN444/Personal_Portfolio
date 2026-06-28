@@ -44,7 +44,7 @@ export function PipelinePanel({
 
       <p className="mt-3 font-display text-lg text-offwhite">Retrieval pipeline</p>
       <p className="prose-measure mt-1 text-sm leading-relaxed text-faint">
-        The real flow behind each answer — embed the question, dense vector-search my documents,
+        The real flow behind each answer, embed the question, dense vector-search my documents,
         gate for relevance, then a grounded, cited reply.
       </p>
 
